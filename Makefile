@@ -27,6 +27,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
                 $(GTEST_DIR)/include/gtest/internal/*.h
 
 all : $(TESTS)
+	mkdir -p $(OBJ_DIR)
 	mv *.o $(OBJ_DIR)
 
 clean :

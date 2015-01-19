@@ -6,16 +6,20 @@
 
 using namespace std;
 
+#define IterFrame(count, test_fun) \
+  int iter_count = count; \
+  for (int i = 0; i < iter_count; i++) \
+    test_fun; \
+  cout << #test_fun << " count: " << iter_count << endl
+  
+
 // gettimeofday
 TEST(SystemCallTest, GetTimeOfDay)
 {
-  int count = 1000* 1000;
 //  struct timeval begin_time;
 //  gettimeofday(&begin_time, NULL);
   struct timeval tmp_time;
-  for (int i = 0; i < count; i++)
-    gettimeofday(&tmp_time, NULL);
-  cout << "gettimeofday count is " << count << endl;
+  IterFrame(1000* 1000, gettimeofday(&tmp_time, NULL));
 
 //  struct timeval end_time;
 //  gettimeofday(&end_time, NULL);
@@ -56,10 +60,23 @@ void * test_thread(void*)
 TEST(SystemCallTest, Pthread)
 {
   pthread_t pid;
-  int count = 400;
-  for (int i = 0; i < count; i++)
-    pthread_create(&pid, NULL, test_thread, NULL);
-  cout << "pthread count is " <<  count << endl;
+  IterFrame(400, pthread_create(&pid, NULL, test_thread, NULL));
+
 //  pthread_join(pid, NULL);
+}
+
+// memset 1024
+TEST(SystemCallTest, Memset1k)
+{
+  char test_array[1024];
+  IterFrame(100*1000, memset(test_array, 0, sizeof(test_array)));
+
+}
+
+// memset 1024*1024
+TEST(SystemCallTest, Memset1m)
+{
+  char test_array[1024*1024];
+  IterFrame(100*1000, memset(test_array, 0, sizeof(test_array)));
 }
 
