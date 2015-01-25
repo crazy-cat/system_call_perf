@@ -4,3 +4,5 @@ run this, you can get common system call performance in linux
 gettimeofday 
 fork
 pthread_create
+memset
+memcpy

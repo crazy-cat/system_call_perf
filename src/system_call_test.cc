@@ -7,10 +7,12 @@
 using namespace std;
 
 #define IterFrame(count, test_fun) \
-  int iter_count = count; \
-  for (int i = 0; i < iter_count; i++) \
-    test_fun; \
-  cout << #test_fun << " count: " << iter_count << endl
+  do { \
+    int iter_count = count; \
+    for (int i = 0; i < iter_count; i++) \
+      test_fun; \
+    cout << #test_fun << " count: " << iter_count << endl;\
+  }while(0)\
   
 
 // gettimeofday
@@ -78,5 +80,21 @@ TEST(SystemCallTest, Memset1m)
 {
   char test_array[1024*1024];
   IterFrame(100*1000, memset(test_array, 0, sizeof(test_array)));
+}
+
+// memcpy 1024
+TEST(SystemCallTest, Memcpy1k)
+{
+  char test_array1[1024] = "";
+  char test_array2[1024];
+  IterFrame(100*1000, memcpy(test_array2, test_array1, sizeof(test_array2)));
+}
+
+static char test_array3[1024*1024] = "";
+static char test_array4[1024*1024];
+// memcpy 1024*1024
+TEST(SystemCallTest, Memcpy1M)
+{
+  IterFrame(100*1000, memcpy(test_array4, test_array3, sizeof(test_array4)));
 }
 
